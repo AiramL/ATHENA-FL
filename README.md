@@ -1,5 +1,4 @@
-# ATHENA-FL: ATHENA-FL: Mitigando a Heterogeneidade Estatística através do Um contra Todos no Aprendizado Federado
-
+# ATHENA-FL: Avoiding sTatistical HEterogeinety with oNe versus All in Federated Learning
 
 
 ## FAQ
