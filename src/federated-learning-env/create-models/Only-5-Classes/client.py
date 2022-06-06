@@ -16,6 +16,7 @@ import numpy as np
 
 from pickle import load
 from sys import argv
+from sklearn.utils import shuffle
 
 # client configuration
 serverPort = '8080'
@@ -41,8 +42,7 @@ if len(argv) >= 6:
 
 # Loading the dataset
 
-if clientID <= 5: 
-    
+if clientID <= 5:     
     # first class
     x_train1 = np.asarray(load(open('../../../../datasets/CIFAR-10/Non-IID-distribution/train/class0Train','rb')),dtype=np.float32)
     y_train1 = np.asarray(load(open('../../../../datasets/CIFAR-10/Non-IID-distribution/train/class0TrainLabel','rb')),dtype=np.float32)
@@ -178,19 +178,22 @@ else:
 
 
 # create the training data
-x_train = np.concatenate((x_train1,x_train2,x_train3,x_train4,x_train5))
+#x_train = np.concatenate((x_train1,x_train2,x_train3,x_train4,x_train5))/255
+x_train = np.concatenate((x_train1,x_train2,x_train3,x_train4,x_train5,x_test1,x_test2,x_test3,x_test4,x_test5))/255
 
 
 # create the test data
-x_test = np.concatenate((x_test1,x_test2,x_test3,x_test4,x_test5))
+#x_test = np.concatenate((x_test1,x_test2,x_test3,x_test4,x_test5))/255
 
 # Verify if we are training a robust model or OvA models
 if not basicNN:
-    y_train = np.concatenate((y_train1,y_train2,y_train3,y_train4,y_train5))
-    y_test = np.concatenate((y_test1,y_test2,y_test3,y_test4,y_test5))
+    #y_train = np.concatenate((y_train1,y_train2,y_train3,y_train4,y_train5))
+    y_train = np.concatenate((y_train1,y_train2,y_train3,y_train4,y_train5,y_test1,y_test2,y_test3,y_test4,y_test5))
+    #y_test = np.concatenate((y_test1,y_test2,y_test3,y_test4,y_test5))
     
     model = tf.keras.applications.MobileNetV2((32, 32, 3), classes=5, weights=None)
-    model.compile(optimizer='adam',loss='sparse_categorical_crossentropy',metrics=['accuracy'])
+    model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=1e-3),loss='sparse_categorical_crossentropy',metrics=['accuracy'])
+
 
 # If it is a basic NN we train a One-versus-All models
 else:
@@ -234,6 +237,7 @@ else:
     model.compile(optimizer='adam',loss='binary_crossentropy',metrics=['accuracy'])
 
 
+x_train, y_train = shuffle(x_train, y_train, random_state=47527)
 
 class CifarClient(fl.client.NumPyClient):
 	
@@ -242,15 +246,19 @@ class CifarClient(fl.client.NumPyClient):
 
     def fit(self, parameters, config):
         model.set_weights(parameters)
-        model.fit(x_train, y_train, epochs=5,steps_per_epoch=32)
-        return model.get_weights(), len(x_train), {}
+        #model.fit(x_train, y_train, epochs=5,batch_size=70)
+        model.fit(x_train[:2100], y_train[:2100], epochs=1,batch_size=70)
+        #return model.get_weights(), len(x_train), {}
+        return model.get_weights(), len(x_train[:2100]), {}
 
     def evaluate(self, parameters, config):
         model.set_weights(parameters)
         if clientID == 1:
             model.save('model_class_'+str(modelType)+"_simple_"+str(basicNN))
-        loss, accuracy = model.evaluate(x_test,  y_test, verbose=2)
-        return loss, len(x_test), {"accuracy": accuracy}
+        #loss, accuracy = model.evaluate(x_test,  y_test, verbose=2)
+        loss, accuracy = model.evaluate(x_train[2100:],  y_train[2100:], verbose=2)
+        #return loss, len(x_test), {"accuracy": accuracy}
+        return loss, len(x_train[2100:]), {"accuracy": accuracy}
 
 	
 
