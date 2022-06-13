@@ -61,7 +61,9 @@ def main():
     class9TestLabel = []
 
     # Load CIFAR-10 dataset
-    (x_train, y_train), (x_test, y_test) = tf.keras.datasets.cifar10.load_data()
+    if dataset_name == "CIFAR-10":
+        # Load CIFAR-10 dataset
+        (x_train, y_train), (x_test, y_test) = tf.keras.datasets.cifar10.load_data()
     x_train_list = x_train.tolist() 
     y_train_list = y_train.tolist() 
     x_test_list = x_test.tolist() 

@@ -15,10 +15,17 @@ import pickle
 import numpy as np
 from sys import argv
 
-def main(n_clients):
+def main(n_clients,dataset_name="MNIST"):
     
-    # Load CIFAR-10 dataset
-    (x_train, y_train), (x_test, y_test) = tf.keras.datasets.cifar10.load_data()
+    if dataset_name == "CIFAR-10":
+        # Load CIFAR-10 dataset
+        (x_train, y_train), (x_test, y_test) = tf.keras.datasets.cifar10.load_data()
+    elif dataset_name == "CIFAR-100":
+        (x_train, y_train), (x_test, y_test) = tf.keras.datasets.cifar100.load_data()
+    elif dataset_name == "fashion":
+        (x_train, y_train), (x_test, y_test) = tf.keras.datasets.fashion_mnist.load_data()
+    elif dataset_name == "MNIST": 
+        (x_train, y_train), (x_test, y_test) = tf.keras.datasets.mnist.load_data()
     x_train_list = x_train.tolist() 
     y_train_list = y_train.tolist() 
     x_test_list = x_test.tolist() 
