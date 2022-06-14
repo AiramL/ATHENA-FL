@@ -191,7 +191,8 @@ if not basicNN:
     y_train = np.concatenate((y_train1,y_train2,y_train3,y_train4,y_train5,y_test1,y_test2,y_test3,y_test4,y_test5))
     #y_test = np.concatenate((y_test1,y_test2,y_test3,y_test4,y_test5))
     
-    model = tf.keras.applications.MobileNetV2((32, 32, 3), classes=5, weights=None)
+    #model = tf.keras.applications.MobileNetV2((32, 32, 3), classes=5, weights=None)
+    model = tf.keras.applications.MobileNet((32, 32, 3), classes=5, weights=None,dropout=0.01)
     model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=1e-3),loss='sparse_categorical_crossentropy',metrics=['accuracy'])
 
 
@@ -239,6 +240,8 @@ else:
 
 x_train, y_train = shuffle(x_train, y_train, random_state=47527)
 
+trSize = int(len(x_train)*0.9)
+
 class CifarClient(fl.client.NumPyClient):
 	
     def get_parameters(self):
@@ -246,19 +249,15 @@ class CifarClient(fl.client.NumPyClient):
 
     def fit(self, parameters, config):
         model.set_weights(parameters)
-        #model.fit(x_train, y_train, epochs=5,batch_size=70)
-        model.fit(x_train[:2100], y_train[:2100], epochs=1,batch_size=70)
-        #return model.get_weights(), len(x_train), {}
-        return model.get_weights(), len(x_train[:2100]), {}
+        model.fit(x_train[:trSize], y_train[:trSize], epochs=5,batch_size=32,steps_per_epoch=trSize/256)
+        return model.get_weights(), len(x_train[:trSize]), {}
 
     def evaluate(self, parameters, config):
         model.set_weights(parameters)
         if clientID == 1:
             model.save('model_class_'+str(modelType)+"_simple_"+str(basicNN))
-        #loss, accuracy = model.evaluate(x_test,  y_test, verbose=2)
-        loss, accuracy = model.evaluate(x_train[2100:],  y_train[2100:], verbose=2)
-        #return loss, len(x_test), {"accuracy": accuracy}
-        return loss, len(x_train[2100:]), {"accuracy": accuracy}
+        loss, accuracy = model.evaluate(x_train[trSize:],  y_train[trSize:], verbose=2)
+        return loss, len(x_train[trSize:]), {"accuracy": accuracy}
 
 	
 

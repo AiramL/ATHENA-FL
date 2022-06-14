@@ -1,4 +1,4 @@
-# Authors: Gustavo Franco Camilo and Lucas Airam Castro de Souza
+# Authors: Lucas Airam Castro de Souza
 # Laboratory: Grupo de Teleinformática e Automação (GTA)
 # University: Universidade Federal do Rio de Janeiro (UFRJ)
 #
@@ -14,7 +14,7 @@ import tensorflow as tf
 import pickle
 import numpy as np
 
-def main():
+def get_FMNIST():
     # classes in the dataset
     class0Train = []
     class1Train = []
@@ -199,5 +199,4 @@ def main():
     pickle.dump(class9TestLabel,open('class9TestLabel',"wb"))
 
 
-main()
 
