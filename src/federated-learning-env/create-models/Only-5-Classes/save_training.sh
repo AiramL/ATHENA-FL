@@ -7,26 +7,16 @@
 #
 #
 #
-#
-#
-#
 
-# initialize the server
-python3.9 server.py 100 8081 &
-#python3.9 server.py 100 8082 &
-#python3.9 server.py 100 8083 &
-#python3.9 server.py 100 8084 &
-#python3.9 server.py 100 8085 &
+data=$1
+serverPort=$2
+epochs=$3
+numClients=$4
+ova=$5
 
-sleep 2
+
 
 # usage of client.py: python3.9 client.py <model-type> <server-port> <client-id> <basic-neural-network-flag> <number-of-clients>
-
-# save results for 5 clients and a robust model
-for i in $(seq 5)
-do
-	python3.9 client.py 1 8081 $i 0 5 >> results/result-complex-model-client$i &
-done
 
 
 # print results on the screen for 5 clients and a robust model
@@ -35,23 +25,41 @@ done
 #	python3.9 client.py 1 8081 $i 0 5 & 
 #done
 
-# save results for 5 clients and a simple model
-#for i in $(seq 5)
-#do
-#	python3.9 client.py 0 8085  $i 1 5 >> results/result-simple-model-5-client$i &
-#	python3.9 client.py 1 8081  $i 1 5 >> results/result-simple-model-1-client$i &
-#	python3.9 client.py 2 8082  $i 1 5 >> results/result-simple-model-2-client$i &
-#	python3.9 client.py 3 8083  $i 1 5 >> results/result-simple-model-3-client$i &
-#	python3.9 client.py 4 8084  $i 1 5 >> results/result-simple-model-4-client$i &
-#done
+# save results for a robust model
+if [ $ova -eq 0 ];
+then
+
+	# initialize the server
+	python3.9 server.py $epochs $serverPort &
+
+	sleep 2
+	
+	# initialize the clients
+	for i in $(seq 0 $numClients)
+	do
+		python3.9 client.py 1 $serverPort $i 0 $numClients $data >> results/result-$data-complex-model-client$i &
+	done
+fi	
 
 
-# print results for 5 clients and a simple model
-#for i in $(seq 5)
-#do
-#	python3.9 client.py 0 8085  $i 1 5 >> results/result-simple-model-5-client$i &
-#	python3.9 client.py 1 8081  $i 1 5 >> results/result-simple-model-1-client$i &
-#	python3.9 client.py 2 8082  $i 1 5 >> results/result-simple-model-2-client$i &
-#	python3.9 client.py 3 8083  $i 1 5 >> results/result-simple-model-3-client$i &
-#	python3.9 client.py 4 8084  $i 1 5 >> results/result-simple-model-4-client$i &
-#done
+# save results a simple model
+if [ $ova -eq 1 ];
+then
+	# initialize the servers
+	for j in $(seq 0 9)
+	do
+		python3.9 server.py $epochs "$(($serverPort+$j))" &
+	done
+
+	sleep 2
+
+	# intialize the clients
+	for i in $(seq $numClients)
+	do
+		for j in $(seq 0 9)
+		do
+			python3.9 client.py $j "$(($serverPort+$j))" $i 1 $numClients $data >> results/result-$data-simple-model-$j-client$i &
+		done
+	done
+fi
+

@@ -25,11 +25,11 @@ clientID = 1
 numClients = 10
 basicNN = True
 
-model_1 = tf.keras.models.load_model('model_class_0_simple_True')
-model_2 = tf.keras.models.load_model('model_class_1_simple_True')
-model_3 = tf.keras.models.load_model('model_class_2_simple_True')
-model_4 = tf.keras.models.load_model('model_class_3_simple_True')
-model_5 = tf.keras.models.load_model('model_class_4_simple_True')
+model_1 = tf.keras.models.load_model('models/model_class_0_simple_True')
+model_2 = tf.keras.models.load_model('models/model_class_1_simple_True')
+model_3 = tf.keras.models.load_model('models/model_class_2_simple_True')
+model_4 = tf.keras.models.load_model('models/model_class_3_simple_True')
+model_5 = tf.keras.models.load_model('models/model_class_4_simple_True')
 
 
 # first class
