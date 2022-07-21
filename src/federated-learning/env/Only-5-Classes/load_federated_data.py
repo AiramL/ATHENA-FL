@@ -55,7 +55,7 @@ def load_data_federated_2_classes(dataset_name,clientID,numClients,basicNN,model
 
     # reshape MNIST and FMNIST
     if dataset_name == "MNIST" or dataset_name == "FMNIST":
-        X = transform.resize(X, (len(X), 32, 32))
+        X = transform.resize(X, (len(X), 32, 32, 1))
 
     # If it is a basic NN we train a One-versus-All models
     if basicNN:
@@ -111,7 +111,7 @@ def load_data_federated_5_classes(dataset_name,clientID,numClients,basicNN,model
 
     # reshape MNIST and FMNIST
     if dataset_name == "MNIST" or dataset_name == "FMNIST":
-        X = transform.resize(X, (len(X), 32, 32))
+        X = transform.resize(X, (len(X), 32, 32, 1))
 
     # If it is a basic NN we train a One-versus-All models
     if basicNN:
@@ -168,7 +168,7 @@ def load_data_federated_IID(dataset_name,clientID,numClients,basicNN,modelType,t
 
     # reshape MNIST and FMNIST
     if dataset_name == "MNIST" or dataset_name == "FMNIST":
-        X = transform.resize(X, (len(X), 32, 32))
+        X = transform.resize(X, (len(X), 32, 32, 1))
 
     # If it is a basic NN we train a One-versus-All models
     if basicNN:

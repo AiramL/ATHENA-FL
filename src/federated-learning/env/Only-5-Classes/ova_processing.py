@@ -1,3 +1,13 @@
+# Author: Lucas Airam Castro de Souza
+# Laboratory: Grupo de Teleinformatica e Automacao (GTA)
+# University: Universidade Federal do Rio de Janeiro (UFRJ)
+#
+#
+#
+#
+#
+#
+#
 
 import numpy as np
 

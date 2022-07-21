@@ -16,7 +16,7 @@ from sys import argv
 
 from load_federated_data import *
 from generate_neural_network import build_model
-
+from augment_data import augment_dataset
 
 # client default configuration
 serverPort = '8080'
@@ -61,6 +61,11 @@ elif scenario == 3:
     x_train, y_train, x_test, y_test = load_data_federated_5_classes(dataset_name, clientID, numClients, basicNN, modelType, trPer)
 
 
+# augmenting the dataset
+#x_train, y_train = augment_dataset(x_train,y_train)
+#x_test, y_test = augment_dataset(x_test,y_test)
+
+
 # Build neural network
 model = build_model(basicNN,dataset_name)
 
@@ -72,12 +77,14 @@ class CifarClient(fl.client.NumPyClient):
 
     def fit(self, parameters, config):
         model.set_weights(parameters)
+        model.save('models/model_class_'+str(modelType)+"_global_before_training_simple_"+str(basicNN)+"_client_"+str(clientID))
         model.fit(x_train, y_train, epochs=5,batch_size=32,steps_per_epoch=int(len(x_train)/160))
+        model.save('models/model_class_'+str(modelType)+"_local_after_train_simple_"+str(basicNN)+"_client_"+str(clientID))
         return model.get_weights(), len(x_train), {}
 
     def evaluate(self, parameters, config):
         model.set_weights(parameters)
-        model.save('models/model_class_'+str(modelType)+"_simple_"+str(basicNN)+"_client_"+str(clientID))
+        model.save('models/model_class_'+str(modelType)+"_aggregated_final_simple_"+str(basicNN)+"_client_"+str(clientID))
         loss, accuracy = model.evaluate(x_test,  y_test, verbose=2)
         return loss, len(x_test), {"accuracy": accuracy}
 
