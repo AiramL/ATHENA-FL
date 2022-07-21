@@ -1,7 +1,0 @@
-#!/bin/bash 
-
-dst=$1
-
-mv *Train* $dst/train
-mv *Test* $dst/test
-

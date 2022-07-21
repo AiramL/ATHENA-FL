@@ -1,6 +1,0 @@
-#!/bin/bash 
-
-dataset_name=$1
-
-mkdir -p ../../datasets/$dataset_name/Non-IID-distribution/test
-mkdir ../../datasets/$dataset_name/Non-IID-distribution/train

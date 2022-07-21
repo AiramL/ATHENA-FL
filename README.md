@@ -1,5 +1,10 @@
 # ATHENA-FL: Avoiding sTatistical HEterogeinety with oNe versus All in Federated Learning
 
+## Configuration
+
+    cd src/dataset-process
+    ./prepare_data 
+
 
 ## FAQ
 
