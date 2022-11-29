@@ -11,6 +11,8 @@
 
 import numpy as np
 
+def binary_labels_dataframe(y_train,modelType):
+    return y_train.apply(lambda label: 1 if (y_train.item() == modelType) else -1, axis=1)
 
 def binary_labels(y_train,modelType):
 

@@ -33,9 +33,9 @@ def load_data_federated_2_classes(dataset_name,clientID,numClients,basicNN,model
         Y_test_current = np.asarray(load(open('../../../../datasets/'+
             dataset_name+'/Non-IID-distribution/test/class'+str(i)+'TestLabel','rb')),dtype=np.float32)
 
-        begin_slice_train = int(len(X_train_current)/(numClients/5)*(clientID-1))
-        end_slice_train = int(len(X_train_current)/(numClients/5)*clientID)
-        begin_slice_test = int(len(X_test_current)/(numClients/5)*(clientID-1))
+        begin_slice_train = int(len(Y_train_current)/(numClients/5)*(clientID-1))
+        end_slice_train = int(len(Y_train_current)/(numClients/5)*clientID)
+        begin_slice_test = int(len(Y_test_current)/(numClients/5)*(clientID-1))
         end_slice_test = int(len(Y_test_current)/(numClients/5)*clientID)
 
         X_train_current = X_train_current[begin_slice_train:end_slice_train]
@@ -89,9 +89,9 @@ def load_data_federated_5_classes(dataset_name,clientID,numClients,basicNN,model
         Y_test_current = np.asarray(load(open('../../../../datasets/'+
             dataset_name+'/Non-IID-distribution/test/class'+str(i)+'TestLabel','rb')),dtype=np.float32)
 
-        begin_slice_train = int(len(X_train_current)/(numClients/2)*(clientID-1))
-        end_slice_train = int(len(X_train_current)/(numClients/2)*clientID)
-        begin_slice_test = int(len(X_test_current)/(numClients/2)*(clientID-1))
+        begin_slice_train = int(len(Y_train_current)/(numClients/2)*(clientID-1))
+        end_slice_train = int(len(Y_train_current)/(numClients/2)*clientID)
+        begin_slice_test = int(len(Y_test_current)/(numClients/2)*(clientID-1))
         end_slice_test = int(len(Y_test_current)/(numClients/2)*clientID)
 
         X_train_current = X_train_current[begin_slice_train:end_slice_train]
@@ -143,12 +143,13 @@ def load_data_federated_IID(dataset_name,clientID,numClients,basicNN,modelType,t
         Y_train_current = np.asarray(load(open('../../../../datasets/'+
             dataset_name+'/Non-IID-distribution/train/class'+str(i)+'TrainLabel','rb')), dtype=np.float32)
 
+
         Y_test_current = np.asarray(load(open('../../../../datasets/'+
             dataset_name+'/Non-IID-distribution/test/class'+str(i)+'TestLabel','rb')),dtype=np.float32)
 
-        begin_slice_train = int(len(X_train_current)/numClients*(clientID-1))
-        end_slice_train = int(len(X_train_current)/numClients*clientID)
-        begin_slice_test = int(len(X_test_current)/numClients*(clientID-1))
+        begin_slice_train = int(len(Y_train_current)/numClients*(clientID-1))
+        end_slice_train = int(len(Y_train_current)/numClients*clientID)
+        begin_slice_test = int(len(Y_test_current)/numClients*(clientID-1))
         end_slice_test = int(len(Y_test_current)/numClients*clientID)
 
         X_train_current = X_train_current[begin_slice_train:end_slice_train]
@@ -175,6 +176,8 @@ def load_data_federated_IID(dataset_name,clientID,numClients,basicNN,modelType,t
         Y = binary_labels(Y,modelType)
     
     X, Y = shuffle(X, Y, random_state=47527)
+    
+    #print("clientID: ",clientID," Y: ",len(Y))
     
     trSize = int(len(X)*trPer)
     

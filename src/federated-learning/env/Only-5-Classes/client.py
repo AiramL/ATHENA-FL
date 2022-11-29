@@ -16,7 +16,8 @@ from sys import argv
 
 from load_federated_data import *
 from generate_neural_network import build_model
-from augment_data import augment_dataset
+
+VERBOSE = 0
 
 # client default configuration
 serverPort = '8080'
@@ -49,7 +50,7 @@ if len(argv) >= 8:
     scenario = int(argv[7])
 
 # Loading the dataset
-trPer = 0.9
+trPer = 0.8
 
 if scenario == 1:
     x_train, y_train, x_test, y_test = load_data_federated_IID(dataset_name, clientID, numClients, basicNN, modelType, trPer)
@@ -61,14 +62,17 @@ elif scenario == 3:
     x_train, y_train, x_test, y_test = load_data_federated_5_classes(dataset_name, clientID, numClients, basicNN, modelType, trPer)
 
 
-# augmenting the dataset
-#x_train, y_train = augment_dataset(x_train,y_train)
-#x_test, y_test = augment_dataset(x_test,y_test)
-
+if VERBOSE:
+    print("Client ",clientID," Number of test samples: ",len(x_test))
+    print("Client ",clientID," Number of test labels: ",len(y_test))
+    print("Client ",clientID," Number of train samples: ",len(x_test))
+    print("Client ",clientID," Number of train labels: ",len(y_train))
 
 # Build neural network
 model = build_model(basicNN,dataset_name)
 
+# Model batch size
+bs=32
 
 class CifarClient(fl.client.NumPyClient):
 	
@@ -77,14 +81,14 @@ class CifarClient(fl.client.NumPyClient):
 
     def fit(self, parameters, config):
         model.set_weights(parameters)
-        model.save('models/model_class_'+str(modelType)+"_global_before_training_simple_"+str(basicNN)+"_client_"+str(clientID))
-        model.fit(x_train, y_train, epochs=5,batch_size=32,steps_per_epoch=int(len(x_train)/160))
-        model.save('models/model_class_'+str(modelType)+"_local_after_train_simple_"+str(basicNN)+"_client_"+str(clientID))
+        model.save('models/model_class_'+str(modelType)+"_global_before_training_simple_"+str(basicNN)+"_client_"+str(clientID)+'_dataset_'+dataset_name+'_numClients_'+str(numClients))
+        model.fit(x_train, y_train, epochs=5,batch_size=bs,steps_per_epoch=int(len(x_train)//bs))
+        model.save('models/model_class_'+str(modelType)+"_local_after_train_simple_"+str(basicNN)+"_client_"+str(clientID)+'_dataset_'+dataset_name+'_numClients_'+str(numClients))
         return model.get_weights(), len(x_train), {}
 
     def evaluate(self, parameters, config):
         model.set_weights(parameters)
-        model.save('models/model_class_'+str(modelType)+"_aggregated_final_simple_"+str(basicNN)+"_client_"+str(clientID))
+        model.save('models/model_class_'+str(modelType)+"_aggregated_final_simple_"+str(basicNN)+"_client_"+str(clientID)+'_dataset_'+dataset_name+'_numClients_'+str(numClients))
         loss, accuracy = model.evaluate(x_test,  y_test, verbose=2)
         return loss, len(x_test), {"accuracy": accuracy}
 

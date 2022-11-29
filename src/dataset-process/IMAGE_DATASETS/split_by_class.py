@@ -10,8 +10,6 @@
 #
 # usage: python split_by_class.py 
 
-import os
-os.environ['CUDA_VISIBLE_DEVICES'] = "0"
 
 import tensorflow as tf
 import pickle
@@ -34,19 +32,18 @@ def split_data(dataset_name):
 
     elif dataset_name == "FMNIST":
         (x_train, y_train), (x_test, y_test) = tf.keras.datasets.fashion_mnist.load_data()
-        x_train = transform.resize(x_train, (len(x_train), 32, 32, 1))
-        x_test = transform.resize(x_test, (len(x_test), 32, 32, 1))
+        #x_train = transform.resize(x_train, (len(x_train), 32, 32, 1))
+        #x_test = transform.resize(x_test, (len(x_test), 32, 32, 1))
         
     elif dataset_name == "MNIST":
         (x_train, y_train), (x_test, y_test) = tf.keras.datasets.mnist.load_data()
-        x_train = transform.resize(x_train, (len(x_train), 32, 32, 1))
-        x_test = transform.resize(x_test, (len(x_test), 32, 32, 1))
+        #x_train = transform.resize(x_train, (len(x_train), 32, 32, 1))
+        #x_test = transform.resize(x_test, (len(x_test), 32, 32, 1))
 
-    
     x_train_list = x_train.tolist() 
     y_train_list = y_train.tolist() 
-    x_test_list = x_test.tolist() 
-    y_test_list = y_test.tolist() 
+    x_test_list = x_test.tolist()
+    y_test_list = y_test.tolist()
     
     # Initialize the dictionaries
     for index in np.unique(y_train):
@@ -64,29 +61,29 @@ def split_data(dataset_name):
     index = 0
     for sample in y_train_list:
         if type(sample) == list:
-            dictClassTrain['class'+str(sample[0])+'Train'].append(np.asarray(x_train_list[index],dtype=np.uint8))
-            dictLabelTrain['class'+str(sample[0])+'TrainLabel'].append(np.asarray(sample,dtype=np.uint8))
+            dictClassTrain['class'+str(sample[0])+'Train'].append(np.asarray(x_train_list[index]))
+            dictLabelTrain['class'+str(sample[0])+'TrainLabel'].append(np.asarray(sample))
         else:
-            dictClassTrain['class'+str(sample)+'Train'].append(np.asarray(x_train_list[index],dtype=np.uint8))
-            dictLabelTrain['class'+str(sample)+'TrainLabel'].append(np.asarray(sample,dtype=np.uint8))
+            dictClassTrain['class'+str(sample)+'Train'].append(np.asarray(x_train_list[index]))
+            dictLabelTrain['class'+str(sample)+'TrainLabel'].append(np.asarray(sample))
         index += 1
 
     index = 0
     for sample in y_test_list:
         if type(sample) == list:
-            dictClassTest['class'+str(sample[0])+'Test'].append(np.asarray(x_test_list[index],dtype=np.uint8))
-            dictLabelTest['class'+str(sample[0])+'TestLabel'].append(np.asarray(sample,dtype=np.uint8))
+            dictClassTest['class'+str(sample[0])+'Test'].append(np.asarray(x_test_list[index]))
+            dictLabelTest['class'+str(sample[0])+'TestLabel'].append(np.asarray(sample))
         else:
-            dictClassTest['class'+str(sample)+'Test'].append(np.asarray(x_test_list[index],dtype=np.uint8))
-            dictLabelTest['class'+str(sample)+'TestLabel'].append(np.asarray(sample,dtype=np.uint8))
+            dictClassTest['class'+str(sample)+'Test'].append(np.asarray(x_test_list[index]))
+            dictLabelTest['class'+str(sample)+'TestLabel'].append(np.asarray(sample))
         index += 1
     
     # Augment the dataset
-    #for index in np.unique(y_train):
-    #    dictClassTrain['class'+str(index)+'Train'], dictLabelTrain['class'+str(index)+'TrainLabel'] = augment_dataset(dictClassTrain['class'+str(index)+'Train'], dictLabelTrain['class'+str(index)+'TrainLabel'])
+    for index in np.unique(y_train):
+        dictClassTrain['class'+str(index)+'Train'], dictLabelTrain['class'+str(index)+'TrainLabel'] = augment_dataset(dictClassTrain['class'+str(index)+'Train'], dictLabelTrain['class'+str(index)+'TrainLabel'])
     
-    #for index in np.unique(y_test):
-    #    dictClassTest['class'+str(index)+'Test'], dictLabelTest['class'+str(index)+'TestLabel'] =  augment_dataset(dictClassTest['class'+str(index)+'Test'], dictLabelTest['class'+str(index)+'TestLabel'])
+    for index in np.unique(y_test):
+        dictClassTest['class'+str(index)+'Test'], dictLabelTest['class'+str(index)+'TestLabel'] =  augment_dataset(dictClassTest['class'+str(index)+'Test'], dictLabelTest['class'+str(index)+'TestLabel'])
 
 
     # Save the files
@@ -103,5 +100,5 @@ def split_data(dataset_name):
         pickle.dump(dictLabelTrain['class'+str(index)+'TrainLabel'],open('class'+str(index)+'TrainLabel',"wb"))
 
 
-# remove after test it
-split_data('CIFAR-10')
+if __name__ == "__main__":
+    split_data('CIFAR-10')
