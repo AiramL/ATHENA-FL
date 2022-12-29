@@ -12,14 +12,12 @@ from os import listdir
 # language = 1 -> print in portuguese-br
 # language = otherwise -> print in english
 
-def plot_image(figureType=0,language=1,numFiles=10,epochs=100,dataset_name="MNIST",complex_model=True):
+def plot_image(figureType=0,language=1,numFiles=10,epochs=100,dataset_name="MNIST",results_path='../federated-learning/env/Only-5-Classes/results/',complex_model=True):
 
     
     file_names = {}
     result_files = {}
     file_lines = {}
-    
-    results_path = '../federated-learning/env/Only-5-Classes/results/'
     
     # numFiles variable maybe deprecated
     total_files = len(listdir(results_path))
@@ -33,7 +31,7 @@ def plot_image(figureType=0,language=1,numFiles=10,epochs=100,dataset_name="MNIS
             file_names["filename"+str(index+1)] = results_path+name
             
         for i in range(1,total_files+1):
-            result_files["result"+str(i)] = open(file_names['filename'+str(i)], 'r')
+            result_files["result"+str(i)] = open(file_names['filename'+str(i)], 'r',encoding="utf-8",errors='ignore')
 
 
         for i in range(1,total_files+1):
@@ -79,7 +77,7 @@ def plot_image(figureType=0,language=1,numFiles=10,epochs=100,dataset_name="MNIS
                     accuracies[i-1].append(float(line.split(':')[2].split(' ')[1]))
        
     for i in range(total_files):
-        ac[i] = accuracies[i][:75]
+        ac[i] = accuracies[i][:]
 
     ac = [ele for ele in ac if ele != []]
         

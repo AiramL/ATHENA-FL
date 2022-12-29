@@ -12,7 +12,7 @@ from datasets import MNIST_truncated, CIFAR10_truncated
 from pickle import dump
 
 
-number_of_clients = 10
+number_of_clients = 20
 
 def load_mnist_data(datadir):
 
@@ -111,8 +111,8 @@ for index in range(number_of_clients):
         client_data[1].append(y_train[item])
         
     # save the current client dataset and clean the variable to the next client
-    dump(client_data[0],open('../../datasets/CIFAR-10/direchlet-partition/client_'+str(index+1)+'_samples',"wb"))
-    dump(client_data[1],open('../../datasets/CIFAR-10/direchlet-partition/client_'+str(index+1)+'_class',"wb"))
+    dump(client_data[0],open('../../../datasets/CIFAR-10/direchlet-partition/client_'+str(index+1)+'_samples',"wb"))
+    dump(client_data[1],open('../../../datasets/CIFAR-10/direchlet-partition/client_'+str(index+1)+'_class',"wb"))
 
     client_data = [[],[]]
         

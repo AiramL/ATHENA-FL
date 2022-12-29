@@ -21,11 +21,13 @@ if len(argv) >= 2:
     numRounds = int(argv[1])
 
 if len(argv) >= 3:
+    #serverPort = argv[2strategy = fl.server.strategy.FedAvg(min_available_clients=2,fraction_fit=0.5,fraction_evaluate=1.0)
     serverPort = argv[2]
 
-strategy = fl.server.strategy.FedAvg(min_available_clients=2,fraction_fit=0.5,fraction_eval=1.0)
+strategy = fl.server.strategy.FedAvg(min_available_clients=2,fraction_fit=0.2,fraction_eval=1.0)
 
-fl.server.start_server(config={"num_rounds": numRounds},server_address='[::]:'+serverPort,strategy=strategy)
+#fl.server.start_server(config=fl.server.ServerConfig(num_rounds=numRounds),server_address='[::]:'+serverPort,strategy=strategy)
+fl.server.start_server(config={'num_rounds':numRounds},server_address='[::]:'+serverPort,strategy=strategy)
 
 
 

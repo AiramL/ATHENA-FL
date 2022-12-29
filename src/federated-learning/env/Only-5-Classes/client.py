@@ -8,7 +8,7 @@
 #
 #
 #
-# usage: python client.py <model-type> <server-port> <client-id> <basic-neural-network-flag> <number-of-clients>
+# usage: python client.py <model-type> <server-port> <client-id> <basic-neural-network-flag> <number-of-clients> <dataset_name> <scenario> <labels>
 
 import flwr as fl
 
@@ -27,6 +27,7 @@ numClients = 10
 basicNN = True
 dataset_name = "CIFAR-10"
 scenario = 2
+labels = [0,1]
 
 if len(argv) >= 2:
     modelType = int(argv[1])
@@ -49,8 +50,15 @@ if len(argv) >= 7:
 if len(argv) >= 8:
     scenario = int(argv[7])
 
+if len(argv) >= 9:
+    aux = argv[8]
+    labels = []
+    for item in aux:
+        if item.isnumeric():
+            labels.append(int(item))
+    
 # Loading the dataset
-trPer = 0.8
+trPer = 0.85
 
 if scenario == 1:
     x_train, y_train, x_test, y_test = load_data_federated_IID(dataset_name, clientID, numClients, basicNN, modelType, trPer)
@@ -60,6 +68,9 @@ elif scenario == 2:
 
 elif scenario == 3:
     x_train, y_train, x_test, y_test = load_data_federated_5_classes(dataset_name, clientID, numClients, basicNN, modelType, trPer)
+
+elif scenario == 4:
+    x_train, y_train, x_test, y_test = load_data_federated_by_class(dataset_name, clientID, numClients, basicNN, modelType, trPer, labels)
 
 
 if VERBOSE:
@@ -72,7 +83,7 @@ if VERBOSE:
 model = build_model(basicNN,dataset_name)
 
 # Model batch size
-bs=32
+bs=15
 
 class CifarClient(fl.client.NumPyClient):
 	
@@ -94,6 +105,6 @@ class CifarClient(fl.client.NumPyClient):
 
 	
 
-fl.client.start_numpy_client("[::]:"+serverPort, client=CifarClient())
+fl.client.start_numpy_client(server_address="[::]:"+serverPort, client=CifarClient())
 
 
