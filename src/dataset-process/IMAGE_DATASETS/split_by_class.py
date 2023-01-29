@@ -79,11 +79,11 @@ def split_data(dataset_name):
         index += 1
     
     # Augment the dataset
-    for index in np.unique(y_train):
-        dictClassTrain['class'+str(index)+'Train'], dictLabelTrain['class'+str(index)+'TrainLabel'] = augment_dataset(dictClassTrain['class'+str(index)+'Train'], dictLabelTrain['class'+str(index)+'TrainLabel'])
-    
-    for index in np.unique(y_test):
-        dictClassTest['class'+str(index)+'Test'], dictLabelTest['class'+str(index)+'TestLabel'] =  augment_dataset(dictClassTest['class'+str(index)+'Test'], dictLabelTest['class'+str(index)+'TestLabel'])
+    #for index in np.unique(y_train):
+    #    dictClassTrain['class'+str(index)+'Train'], dictLabelTrain['class'+str(index)+'TrainLabel'] = augment_dataset(dictClassTrain['class'+str(index)+'Train'], dictLabelTrain['class'+str(index)+'TrainLabel'])
+    #
+    #for index in np.unique(y_test):
+    #    dictClassTest['class'+str(index)+'Test'], dictLabelTest['class'+str(index)+'TestLabel'] =  augment_dataset(dictClassTest['class'+str(index)+'Test'], dictLabelTest['class'+str(index)+'TestLabel'])
 
 
     # Save the files

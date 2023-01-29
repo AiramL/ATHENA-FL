@@ -32,12 +32,12 @@ then
 	# initialize the server
 	python3.9 server.py $epochs $serverPort &
 
-	sleep 2
+	sleep 3
 	
 	# initialize the clients
 	for i in $(seq $numClients)
 	do
-		python3.9 client.py 1 $serverPort $i 0 $numClients $data $scenario >> results/result-$data-complex-model-epochs-$epochs-clients-$numClients-client$i &
+		python3.9 client.py -1 $serverPort $i 0 $numClients $data $scenario >> results/result-$data-complex-model-epochs-$epochs-clients-$numClients-client$i &
 	done
 fi	
 
@@ -58,7 +58,7 @@ then
 	do
 		for j in $(seq 0 9)
 		do
-			python3.9 client.py $j "$(($serverPort+$j))" $i 1 $numClients $data >> results/result-$data-simple-model-$j-epochs-$epochs-clients-$numClients-client$i &
+			python3.9 client.py $j "$(($serverPort+$j))" $i 1 $numClients $data $scenario >> results/result-$data-simple-model-$j-epochs-$epochs-clients-$numClients-client$i &
 		done
 	done
 fi

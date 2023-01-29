@@ -2,8 +2,8 @@
 
 
 # configure the require datasets
-#DATASETS=('MNIST' 'CIFAR-10' 'FMNIST')
-DATASETS=('CIFAR-10')
+DATASETS=('MNIST' 'CIFAR-10' 'FMNIST')
+#DATASETS=('CIFAR-10')
 
 for DATASET_NAME in "${DATASETS[@]}"
 do
