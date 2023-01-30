@@ -8,20 +8,24 @@ from pickle import load
 
 UPLOAD_FOLDER = "./models/client_models"
 MAX_CONTENT_LENGTH = 512 * 1000 * 1000
-TEMPLATE_FOLDER = "template"
-STATIC_FOLDER = "static"
+TEMPLATE_FOLDER = "templates"
+#STATIC_FOLDER = "./static"
 
 
-app = Flask(__name__,template_folder=TEMPLATE_FOLDER,static_folder=STATIC_FOLDER)
+app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = MAX_CONTENT_LENGTH
-
 
 
 @app.route("/")
 def index():
     #return render_template('athena_fl.html')
     return render_template('index.html')
+
+@app.route("/athena/")
+def athena():
+    return render_template('athena_fl.html')
+
 
 @app.route("/about/")
 def about():
