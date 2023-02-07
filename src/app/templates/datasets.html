@@ -30,94 +30,59 @@
 								<section id="banner">
 								  <div class="content">
 										<header>
-											<h1>ATHENA-FL</h1>
-											<p>Building Federated Learning Accurate Models by Client Clustering</p>
+											<h1>Datasets</h1>
+											<p>Public available datasets to train, test and evaluate machine learning models</p>
 										</header>
-										<p>Federated learning is a new paradigm that enables the training of machine learning models through collaboration between clients and an aggregation server. Training eliminates the need to share private data, giving clients privacy of their samples. However, when clients have distinct data distributions, training presents convergence difficulties, resulting in predictive errors in the final model. This paper proposes a federated learning system that considers clients with heterogeneous data distributions and yet produces accurate models in fewer training epochs than the state of the art. The effects of data heterogeneity are mitigated by clustering clients based on an estimate of the data distribution through the weights of the locally trained neural network. In addition, the system uses the one-against-all technique, it trains one detector for each class in the system. Thus, different groups can combine the detectors to form a model that can detect classes from other groups. The results show that the one-against-all model has a high ability to correctly identify samples and up to 18% higher accuracy than traditional training, with a low communication cost during training, reducing the amount of transmitted bytes between 43% and 92% compared to the MobileNet architecture.<br>
-									    <a href="https://github.com/GTA-UFRJ/ATHENA-FL" class="button big">Learn More</a></p>
-									</div>
+										<p>ATHENA-FL use these public datasets to simulate clients data. Download to execute our demonstration.									</div>
 								</section>
 
 							<!-- Section -->
 								<section>
 									<header class="major">
-										<h2>ATHENA-FL Advantages </h2>
-									</header>
-									<div class="features">
-										<article>
-											<span class="icon fa-gem"></span>
-											<div class="content">
-												<h3>Resilent to Non-IID Data</h3>
-												<p>The final models can correctly classify new samples, even though the training data are non-IID among clients.</p></div>
-										</article>
-										<article>
-											<span class="icon solid fa-paper-plane"></span>
-											<div class="content">
-												<h3>More Privacy</h3>
-												<p>Applying Federated Learning to train de models preserves users' privacy.</p></div>
-										</article>
-										<article>
-											<span class="icon solid fa-rocket"></span>
-											<div class="content">
-												<h3>Faster Convergence </h3>
-												<p>Using One-versus-All models, makes the training process finish iin few epochs and faster than conventional Federated Learning approaches.</p></div>
-										</article>
-										<article>
-											<span class="icon solid fa-signal"></span>
-											<div class="content">
-												<h3>Higher Accuracy</h3>
-												<p>Clustering clients leads to a higher final accuracy.</p></div>
-										</article>
-									</div>
-								</section>
-
 							<!-- Section -->
 								<section>
-									<header class="major">
-										<h2>More Details</h2>
-									</header>
 									<div class="posts">
 										<article>
                                         
 										  <a href="#" class="image"><img src="../static/images/execution.png" alt="" /></a>
-											<h3>ATHENA-FL Architecture</h3>
-											<p>We propose a simple architecture to train Machine Learning models with Federa Learning. Learn more details about our proposed architecture.</p>
+											<h3>MNIST</h3>
+											<p>This dataset consists of image samples in gray-scale of handwrite digits with 28x28 pixels.</p>
 											<p><a href="#" class="button">More</a></p>
                                       </article>
 										<article>
 											<a href="#" class="image"><img src="../static/images/github.png" alt="" /></a>
-											<h3>Open-Source Code</h3>
-											<p>All ATHENA-FL code is available at Github. Learn more about our source code.</p>
+											<h3>F-MNIST</h3>
+											<p>Fashion MNIST is ....</p>
 											<p><a href="#" class="button">More</a></p>
 										</article>
 										<article>
 											<a href="#" class="image"><img src="../static/images/pic03.jpg" alt="" /></a>
-											<h3>Tempus ullamcorper</h3>
-											<p>Aenean ornare velit lacus, ac varius enim lorem ullamcorper dolore. Proin aliquam facilisis ante interdum. Sed nulla amet lorem feugiat tempus aliquam.</p>
+											<h3>CIC2019</h3>
+											<p>This ....</p>
 											<ul class="actions">
 												<li><a href="#" class="button">More</a></li>
 											</ul>
 										</article>
 										<article>
 											<a href="#" class="image"><img src="../static/images/pic04.jpg" alt="" /></a>
-											<h3>Sed etiam facilis</h3>
-											<p>Aenean ornare velit lacus, ac varius enim lorem ullamcorper dolore. Proin aliquam facilisis ante interdum. Sed nulla amet lorem feugiat tempus aliquam.</p>
+											<h3>CIFAR-10</h3>
+											<p>This....</p>
 											<ul class="actions">
 												<li><a href="#" class="button">More</a></li>
 											</ul>
 										</article>
 										<article>
 											<a href="#" class="image"><img src="../static/images/pic05.jpg" alt="" /></a>
-											<h3>Feugiat lorem aenean</h3>
-											<p>Aenean ornare velit lacus, ac varius enim lorem ullamcorper dolore. Proin aliquam facilisis ante interdum. Sed nulla amet lorem feugiat tempus aliquam.</p>
+											<h3>CIFAR-100</h3>
+											<p>This ...</p>
 											<ul class="actions">
 												<li><a href="#" class="button">More</a></li>
 											</ul>
 										</article>
 										<article>
 											<a href="#" class="image"><img src="../static/images/pic06.jpg" alt="" /></a>
-											<h3>Amet varius aliquam</h3>
-											<p>Aenean ornare velit lacus, ac varius enim lorem ullamcorper dolore. Proin aliquam facilisis ante interdum. Sed nulla amet lorem feugiat tempus aliquam.</p>
+											<h3>Imagenet</h3>
+											<p>This ...</p>
 											<ul class="actions">
 												<li><a href="#" class="button">More</a></li>
 											</ul>
@@ -148,7 +113,7 @@
 										<li><a href="/">Homepage</a></li>
 										<li><a href="/about">About</a></li>
 <li><a href="/datasets">Datasets</a></li>
-                                        <li><a href="files/client.py" download>Download Client Code</a></li>                                        										<li><a href="models/grafo.pdf" download>Download Test Model</a></li>
+                                        <li><a href="models/grafo.pdf" download>Download Client Code</a></li>                                        										<li><a href="models/grafo.pdf" download>Download Test Model</a></li>
 
 										<li><a href="/ml_models">Machine Learning Models</a></li>
 						<li><a href="/upload">Upload Trained Test Model</a></li>

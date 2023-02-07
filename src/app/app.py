@@ -22,15 +22,25 @@ def index():
     #return render_template('athena_fl.html')
     return render_template('index.html')
 
-@app.route("/athena/")
+@app.route("/athena")
 def athena():
     return render_template('athena_fl.html')
 
 
-@app.route("/about/")
+@app.route("/about")
 def about():
     #return render_template('about.html')
     return render_template('index.html')
+
+@app.route("/ml_models")
+def ml_models():
+    return render_template('ml_models.html')
+
+@app.route("/datasets")
+def datasets():
+    return render_template('datasets.html')
+
+
 
 # Page to the client download the test model
 @app.route('/download_model')
