@@ -17,12 +17,12 @@ def build_model(basicNN, dataset_name,nn_id=1):
                 model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=1e-3),
                    loss='sparse_categorical_crossentropy',metrics=['sparse_categorical_accuracy'])
             elif nn_id == 2:
-                model = tf.keras.applications.MobileNet2((32, 32, 3), classes=10, weights=None,dropout=0.01)
+                model = tf.keras.applications.MobileNetV2((32, 32, 3), classes=10, weights=None)
                 model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=1e-3),
                    loss='sparse_categorical_crossentropy',metrics=['sparse_categorical_accuracy'])
 
             elif nn_id == 3:
-                model = tf.keras.applications.Xception((32, 32, 3), classes=10, weights=None,dropout=0.01)
+                model = tf.keras.applications.Xception(input_shape=(None,32, 32, 3), classes=10, weights=None,include_top=False)
                 model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=1e-3),
                    loss='sparse_categorical_crossentropy',metrics=['sparse_categorical_accuracy'])
         
@@ -46,18 +46,19 @@ def build_model(basicNN, dataset_name,nn_id=1):
             model.compile(optimizer='adam',loss='binary_crossentropy',metrics=['accuracy'])
             
     elif dataset_name == "MNIST":
-            # Verify if we are training a robust model or OvA models
-            if not basicNN:
+        # Verify if we are training a robust model or OvA models
+        if not basicNN:
+            if nn_id == 1:
                 model = tf.keras.applications.MobileNet((32, 32, 1), classes=10, weights=None,dropout=0.01)
                 model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=1e-3),
                        loss='sparse_categorical_crossentropy',metrics=['sparse_categorical_accuracy'])
             elif nn_id == 2:
-                model = tf.keras.applications.MobileNet2((32, 32, 3), classes=10, weights=None,dropout=0.01)
+                model = tf.keras.applications.MobileNetV2(input_shape=(32, 32, 1), include_top=False,classes=10, weights=None)
                 model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=1e-3),
                    loss='sparse_categorical_crossentropy',metrics=['sparse_categorical_accuracy'])
 
             elif nn_id == 3:
-                model = tf.keras.applications.Xception((32, 32, 3), classes=10, weights=None,dropout=0.01)
+                model = tf.keras.applications.Xception((32, 32, 3), classes=10, weights=None,include_top=False)
                 model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=1e-3),
                    loss='sparse_categorical_crossentropy',metrics=['sparse_categorical_accuracy'])
         
@@ -82,17 +83,18 @@ def build_model(basicNN, dataset_name,nn_id=1):
            
     elif dataset_name == "FMNIST":
             # Verify if we are training a robust model or OvA models
-            if not basicNN:
+        if not basicNN:
+            if nn_id == 1:
                 model = tf.keras.applications.MobileNet((28, 28, 1), classes=10, weights=None,dropout=0.1)
                 model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=1e-3),
                         loss='sparse_categorical_crossentropy',metrics=['accuracy'])
             elif nn_id == 2:
-                model = tf.keras.applications.MobileNet2((32, 32, 3), classes=10, weights=None,dropout=0.01)
+                model = tf.keras.applications.MobileNetV2((32, 32, 3), classes=10, weights=None)
                 model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=1e-3),
                    loss='sparse_categorical_crossentropy',metrics=['sparse_categorical_accuracy'])
 
             elif nn_id == 3:
-                model = tf.keras.applications.Xception((32, 32, 3), classes=10, weights=None,dropout=0.01)
+                model = tf.keras.applications.Xception((32, 32, 3), classes=10, weights=None,include_top=False)
                 model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=1e-3),
                    loss='sparse_categorical_crossentropy',metrics=['sparse_categorical_accuracy'])
         
