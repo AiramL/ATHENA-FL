@@ -18,10 +18,10 @@ for model in [0,9]:#range(10):
         if (valor_anterior*(1-tol) < float(avg[i]) and  valor_anterior*(1+tol) > float(avg[i])):
 #            model_epoch = [model_epoch i];
             print(i)
-            print(model)
+            #print(model)
             #%valor_anterior;
             #model_acc = [model_acc avg(i)];
-            print(avg[i])
+            #print(avg[i])
             break
         else:
             valor_anterior = float(avg[i]);

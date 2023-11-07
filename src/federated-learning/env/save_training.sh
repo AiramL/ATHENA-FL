@@ -43,9 +43,9 @@ fi
 # save results a simple model
 if [ $ova -eq 1 ];
 then
-	python3.9 server.py $epochs $serverPort &
+	#python3.9 server.py $epochs $serverPort &
 
-	sleep 3
+	#sleep 3
 
 	# intialize the clients
 	for i in $(seq $numClients)

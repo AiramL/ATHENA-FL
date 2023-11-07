@@ -11,6 +11,26 @@ from pickle import load
 from sklearn.utils import shuffle
 from ova_processing import binary_labels
 
+def load_dirichlet_data(dataset_name,clientID,basicNN,modelType,trPer):
+    X = np.asarray(load(open('../../../datasets/'+dataset_name+'/dirichlet-partition/client_'+str(clientID)+'_samples','rb')), dtype=np.float32)
+    Y = np.asarray(load(open('../../../datasets/'+dataset_name+'/dirichlet-partition/client_'+str(clientID)+'_class','rb')), dtype=np.float32)
+        
+    # normalize the data
+    X /= 255 
+
+    # reshape MNIST and FMNIST
+    if dataset_name == "MNIST" or dataset_name == "FMNIST":
+        X = transform.resize(X, (len(X), 32, 32, 1))
+    
+    # If it is a basic NN we train a One-versus-All models
+    if basicNN:
+        Y = binary_labels(Y,modelType)
+    
+    X, Y = shuffle(X, Y, random_state=47527)
+    
+    trSize = int(len(X)*trPer)
+    
+    return X[:trSize], Y[:trSize], X[trSize:], Y[trSize:]
 
 def load_data_federated_by_class(dataset_name,clientID,numClients,basicNN,modelType,trPer,labels):
     X = np.array([],dtype=np.float32)

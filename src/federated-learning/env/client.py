@@ -13,6 +13,7 @@
 import flwr as fl
 
 from sys import argv
+from pickle import load
 
 from load_federated_data import *
 from generate_neural_network import build_model
@@ -77,6 +78,9 @@ elif scenario == 3:
 elif scenario == 4:
     x_train, y_train, x_test, y_test = load_data_federated_by_class(dataset_name, clientID, numClients, basicNN, modelType, trPer, labels)
 
+elif scenario == 5:
+    x_train, y_train, x_test, y_test = load_dirichlet_data(dataset_name, clientID, basicNN, modelType, trPer)
+
 
 if VERBOSE:
     print("Client ",clientID," Number of test samples: ",len(x_test))
@@ -85,7 +89,7 @@ if VERBOSE:
     print("Client ",clientID," Number of train labels: ",len(y_train))
 
 # Build neural network
-model = build_model(basicNN,dataset_name,2)
+model = build_model(basicNN,dataset_name,1)
 
 # Model batch size
 bs=32
@@ -109,7 +113,26 @@ class CifarClient(fl.client.NumPyClient):
         return loss, len(x_test), {"accuracy": accuracy}
 
 	
+if basicNN:
+    print('OvA Model Traning')
+    # need to implement the get_cluster_id automatic
+    #with open('clusters','rb') as cluster_ids:
+    #    cluster_ids_list = load(cluster_ids)
+        #fl.client.start_numpy_client(server_address="[::]:"+serverPort, client=CifarClient())
+    # FMNIST
+    #clusters = [ 0, -1,  0,  1,  2,  2,  2,  2,  2,  
+    #             2, -1, -1, -1,  2,  2, -1, -1,  2,  
+    #             2, -1,  3,  2,  2,  2,  2,  2, -1,  
+    #             1, -1,  2,  1,  2,  2,  3,  2,  2, 
+    #            -1,  1,  2,  2,  2,  2,  1,  2,  2,  
+    #             3,  2, -1, -1,  2]
+    with open('server_connection_dictionary','rb') as reader:
+        clients_dictionary = load(reader)
 
-fl.client.start_numpy_client(server_address="[::]:"+serverPort, client=CifarClient())
+    serverPort=str(int(serverPort)+clients_dictionary[str(clientID)])
+    fl.client.start_numpy_client(server_address="[::]:"+serverPort, client=CifarClient())
+
+else:
+    fl.client.start_numpy_client(server_address="[::]:"+serverPort, client=CifarClient())
 
 

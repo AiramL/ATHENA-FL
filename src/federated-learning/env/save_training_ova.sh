@@ -21,16 +21,16 @@ modelType=$8
 
 
 # save results a simple model
-#if [ $ova -eq 1 ];
-#then
-	#python3.9 server.py $epochs $serverPort &
+if [ $ova -eq 1 ];
+then
+	python3.9 server.py $epochs $serverPort &
 
-	#sleep 3
+	sleep 3
 
 	# intialize the clients
 	for i in $(seq $numClients)
 	do
 			python3.9 client.py $modelType $serverPort $i $ova $numClients $data $scenario $labels >> results/result-$data-simple-model-$modelType-epochs-$epochs-clients-$numClients-client$i &
 	done
-#fi
+fi
 
