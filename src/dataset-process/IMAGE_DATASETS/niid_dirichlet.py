@@ -6,13 +6,13 @@ import torch.nn as nn
 import logging
 import torchvision.transforms as transforms
 import torch.utils.data as data
-
+from sys import argv
 
 from datasets import MNIST_truncated, CIFAR10_truncated
 from pickle import dump
 
 
-number_of_clients = 20
+number_of_clients = 50
 
 def load_mnist_data(datadir):
 
@@ -23,6 +23,23 @@ def load_mnist_data(datadir):
 
     X_train, y_train = mnist_train_ds.data, mnist_train_ds.target
     X_test, y_test = mnist_test_ds.data, mnist_test_ds.target
+
+    X_train = X_train.data.numpy()
+    y_train = y_train.data.numpy()
+    X_test = X_test.data.numpy()
+    y_test = y_test.data.numpy()
+
+    return (X_train, y_train, X_test, y_test)
+
+def load_fmnist_data(datadir):
+
+    transform = transforms.Compose([transforms.ToTensor()])
+
+    fmnist_train_ds = FMNIST_truncated(datadir, train=True, download=True, transform=transform)
+    fmnist_test_ds = FMNIST_truncated(datadir, train=False, download=True, transform=transform)
+
+    X_train, y_train = fmnist_train_ds.data, fmnist_train_ds.target
+    X_test, y_test = fmnist_test_ds.data, fmnist_test_ds.target
 
     X_train = X_train.data.numpy()
     y_train = y_train.data.numpy()
@@ -48,6 +65,8 @@ def partition_data(dataset, datadir, logdir, partition, n_nets, alpha=0.5):
     if dataset == 'mnist':
         X_train, y_train, X_test, y_test = load_mnist_data(datadir)
     elif dataset == 'cifar10':
+        X_train, y_train, X_test, y_test = load_cifar10_data(datadir)
+    elif dataset == 'fmnist':
         X_train, y_train, X_test, y_test = load_cifar10_data(datadir)
 
     X_train = np.concatenate((X_train,X_test))
@@ -100,20 +119,52 @@ def record_net_data_stats(y_train, net_dataidx_map, logdir):
 
     return net_cls_counts
 
-X_train, y_train, X_test, y_test, data_index, counts = partition_data('cifar10','cifar10','logs','hetero-dir',number_of_clients)
 
-
-client_data = [[],[]]
-
-for index in range(number_of_clients):
-    for item in data_index[index]:
-        client_data[0].append(X_train[item])
-        client_data[1].append(y_train[item])
-        
-    # save the current client dataset and clean the variable to the next client
-    dump(client_data[0],open('../../../datasets/CIFAR-10/direchlet-partition/client_'+str(index+1)+'_samples',"wb"))
-    dump(client_data[1],open('../../../datasets/CIFAR-10/direchlet-partition/client_'+str(index+1)+'_class',"wb"))
-
+if argv[1] == "cifar":
+    X_train, y_train, X_test, y_test, data_index, counts = partition_data('cifar10','cifar10','logs','hetero-dir',number_of_clients)
     client_data = [[],[]]
+    
+    for index in range(number_of_clients):
+        for item in data_index[index]:
+            client_data[0].append(X_train[item])
+            client_data[1].append(y_train[item])
+            
+        # save the current client dataset and clean the variable to the next client
+        dump(client_data[0],open('../../../datasets/CIFAR-10/dirichlet-partition/client_'+str(index+1)+'_samples',"wb"))
+        dump(client_data[1],open('../../../datasets/CIFAR-10/dirichlet-partition/client_'+str(index+1)+'_class',"wb"))
+    
+        client_data = [[],[]]
+
+elif argv[1] == "mnist":
+    X_train, y_train, X_test, y_test, data_index, counts = partition_data('mnist','mnist','logs','hetero-dir',number_of_clients)
+    client_data = [[],[]]
+    
+    for index in range(number_of_clients):
+        for item in data_index[index]:
+            client_data[0].append(X_train[item])
+            client_data[1].append(y_train[item])
+            
+        # save the current client dataset and clean the variable to the next client
+        dump(client_data[0],open('../../../datasets/MNIST/dirichlet-partition/client_'+str(index+1)+'_samples',"wb"))
+        dump(client_data[1],open('../../../datasets/MNIST/dirichlet-partition/client_'+str(index+1)+'_class',"wb"))
+    
+        client_data = [[],[]]
+
+elif argv[1] == "fmnist":
+    X_train, y_train, X_test, y_test, data_index, counts = partition_data('fmnist','fmnist','logs','hetero-dir',number_of_clients)
+    client_data = [[],[]]
+    
+    for index in range(number_of_clients):
+        for item in data_index[index]:
+            client_data[0].append(X_train[item])
+            client_data[1].append(y_train[item])
+            
+        # save the current client dataset and clean the variable to the next client
+        dump(client_data[0],open('../../../datasets/FMNIST/dirichlet-partition/client_'+str(index+1)+'_samples',"wb"))
+        dump(client_data[1],open('../../../datasets/FMNIST/dirichlet-partition/client_'+str(index+1)+'_class',"wb"))
+    
+        client_data = [[],[]]
+    
+
         
 
