@@ -16,9 +16,9 @@ from sys import argv
 
 numRounds = 400
 serverPort ='8080'
-fr_fit=0.2
-num_clients_fit = 2
-num_clients = 2
+fr_fit=1
+num_clients_fit = 50
+num_clients = 50
 
 if len(argv) >= 2:
     numRounds = int(argv[1])

@@ -16,6 +16,13 @@ scenario=$6
 #./save_training.sh cifar-10 8083 400 100 0 1
 
 
+if test -d results; then
+       echo "Directory in use, stopping the execution."
+       exit 1
+else
+       mkdir results
+       mkdir models
+fi
 
 
 # Centralized Results
@@ -32,15 +39,15 @@ scenario=$6
 #python3.9 server.py 1 8080 1 50 50 &
 
 # FedAVG
-#python3.9 server.py 200 8080 1 &
+python3.9 server.py 200 8080 1 &
 
 # OVA
-python3.9 server.py 200 8079 1 &
-python3.9 server.py 200 8080 1 &
-python3.9 server.py 200 8081 1 &
-python3.9 server.py 200 8082 1 &
-python3.9 server.py 200 8083 1 &
-python3.9 server.py 200 8084 1 &
+#python3.9 server.py 200 8079 1 &
+#python3.9 server.py 200 8080 1 &
+#python3.9 server.py 200 8081 1 &
+#python3.9 server.py 200 8082 1 &
+#python3.9 server.py 200 8083 1 &
+#python3.9 server.py 200 8084 1 &
 
 #python3.9 server.py 200 8080 1 &
 sleep 5
@@ -48,7 +55,12 @@ sleep 5
 # 		    <data>   <serverPort> <epochs> <numClients> <ova>  <scenario>          <labels>        <modelType>  <CID>
 #./save_training.sh CIFAR-10     8080       200         50         0       5        [0,1,2,3,4,5,6,7,8,9]       0         0
 #./save_training.sh  CIFAR-10      8080         1         50         0       4        [0,1,2,3,4,5,6,7,8,9]       0         0
-#./save_training.sh  MNIST      8080         1         50         0       5        [0,1,2,3,4,5,6,7,8,9]       0         0
+#./save_training.sh  CIFAR-10      8080         1         10         0       4        [0,1]       0         0
+#./save_training.sh  CIFAR-10      8080         1         10         0       4        [2,3]       0         1
+#./save_training.sh  CIFAR-10      8080         1         10         0       4        [4,5]       0         2
+#./save_training.sh  CIFAR-10      8080         1         10         0       4        [6,7]       0         3
+#./save_training.sh  CIFAR-10      8080         1         10         0       4        [8,9]       0         4
+#./save_training.sh  CIFAR-10      8080         1         50         0       5        [0,1,2,3,4,5,6,7,8,9]       0         0
 #./save_training.sh  FMNIST      8080         1         50         0       4        [0,1,2,3,4,5,6,7,8,9]       0         0
 
 # OVA Dirichlet
@@ -56,7 +68,7 @@ sleep 5
 #./save_training.sh   FMNIST      8080       200         50         1        5        [0,1,2,3,4,5,6,7,8,9]       0         0
 #./save_training.sh   FMNIST      8080       200         50         1        5        [0,1,2,3,4,5,6,7,8,9]       1         0
 #./save_training.sh   FMNIST      8080       200         50         1        5        [0,1,2,3,4,5,6,7,8,9]       2         0
-./save_training.sh   FMNIST      8080       200         50         1        5        [0,1,2,3,4,5,6,7,8,9]       3         0
+#./save_training.sh   FMNIST      8080       200         50         1        5        [0,1,2,3,4,5,6,7,8,9]       3         0
 #./save_training.sh   FMNIST      8080       200         50         1        5        [0,1,2,3,4,5,6,7,8,9]       4         0
 #./save_training.sh   FMNIST      8080       200         50         1        5        [0,1,2,3,4,5,6,7,8,9]       5         0
 #./save_training.sh   FMNIST      8080       200         50         1        5        [0,1,2,3,4,5,6,7,8,9]       6         0
@@ -103,7 +115,7 @@ sleep 5
 
 
 # 		    <data>   <serverPort> <epochs> <numClients> <ova> <scenario>     <labels>   <modelType>  <CID>
-#./save_training.sh  FMNIST       8080        200        25         0       4        [0,1,2,3,4]       0         1
+./save_training.sh  FMNIST       8080        200        50         0       5        [0,1,2,3,4]       0         1
 #./save_training.sh  FMNIST       8080        200        25         0       4        [5,6,7,8,9]       0         2
 
 # 		    <data>   <serverPort> <epochs> <numClients> <ova> <scenario> <labels> <modelType>  <CID>

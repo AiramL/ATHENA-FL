@@ -2,5 +2,12 @@
 
 pkill -9 -f client.py
 pkill -9 -f server.py
-rm -rf models/*
-rm -rf results/*
+
+if test -d results; then
+	rm -rf results/
+fi
+
+if test -d models; then
+	rm -rf models/
+fi
+
